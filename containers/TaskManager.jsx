@@ -9,9 +9,11 @@ function reducer(state, action) {
       return [...state, action.task];
     }
     case "deleteTask": {
-      const changes = [...state];
-      changes.splice(action.index, 1);
-      return changes;
+      return state.filter((task) => task.id !== action.deleteId);
+    }
+    default: {
+      console.log(action.type);
+      return state;
     }
   }
 }
@@ -19,17 +21,25 @@ function reducer(state, action) {
 function TaskManager() {
   const [tasks, dispatch] = useReducer(reducer, []);
   // Function to add a new task
+  const id = crypto.randomUUID();
   const addTask = (task) => {
-    dispatch({ type: "addTask", task });
+    const newTask = {
+      id: id,
+      name: task.name,
+      dueDate: task.dueDate,
+      taskContent: task.taskContent,
+    };
+    dispatch({ type: "addTask", task: newTask });
   };
 
   // Function to delete a task
-  const deleteTask = (index) => {
-    dispatch({ type: "deleteTask", index });
+  const deleteTask = (deleteId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this task?"
     );
-    if (confirmDelete) dispatch({ type: "deleteTask", index });
+    if (confirmDelete) {
+      dispatch({ type: "deleteTask", deleteId: deleteId });
+    }
   };
   return (
     <div>

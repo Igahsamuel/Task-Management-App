@@ -1,11 +1,15 @@
-
-import TaskItem from './TaskItem';
+import TaskItem from "./TaskItem";
 
 function TaskList({ tasks, deleteTask }) {
   return (
     <div>
-      {tasks.map((task, index) => (
-        <TaskItem key={index} task={task} onDelete={() => deleteTask(index)} />
+      {tasks.map((task, id) => (
+        <TaskItem
+          key={task.id}
+          task={task}
+          num={id}
+          onDelete={() => deleteTask(task.id)}
+        />
       ))}
     </div>
   );
